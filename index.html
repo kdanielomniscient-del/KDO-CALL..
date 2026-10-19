@@ -114,7 +114,48 @@
       <div class="form-stack">
         <div class="field"><label>Prénom</label><input id="su-first" placeholder="Ex. Daniel"></div>
         <div class="field"><label>Nom</label><input id="su-last" placeholder="Ex. Omniscient"></div>
-        <div class="field"><label>Numéro de téléphone</label><input id="su-phone" type="tel" placeholder="+228 90 00 00 00"></div>
+        <div class="field"><label>Numéro de téléphone</label>
+          <div style="display:flex;gap:8px">
+          <select id="su-country" style="padding:13px 8px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:13.5px;font-family:inherit;flex-shrink:0;width:112px">
+          <option value="+228">Togo +228</option>
+          <option value="+229">Benin +229</option>
+          <option value="+225">Cote d'Ivoire +225</option>
+          <option value="+233">Ghana +233</option>
+          <option value="+234">Nigeria +234</option>
+          <option value="+226">Burkina Faso +226</option>
+          <option value="+223">Mali +223</option>
+          <option value="+221">Senegal +221</option>
+          <option value="+227">Niger +227</option>
+          <option value="+224">Guinee +224</option>
+          <option value="+237">Cameroun +237</option>
+          <option value="+241">Gabon +241</option>
+          <option value="+242">Congo-Brazzaville +242</option>
+          <option value="+243">RD Congo +243</option>
+          <option value="+235">Tchad +235</option>
+          <option value="+236">Centrafrique +236</option>
+          <option value="+250">Rwanda +250</option>
+          <option value="+254">Kenya +254</option>
+          <option value="+212">Maroc +212</option>
+          <option value="+213">Algerie +213</option>
+          <option value="+216">Tunisie +216</option>
+          <option value="+20">Egypte +20</option>
+          <option value="+27">Afrique du Sud +27</option>
+          <option value="+33">France +33</option>
+          <option value="+32">Belgique +32</option>
+          <option value="+41">Suisse +41</option>
+          <option value="+1">USA/Canada +1</option>
+          <option value="+44">Royaume-Uni +44</option>
+          <option value="+49">Allemagne +49</option>
+          <option value="+39">Italie +39</option>
+          <option value="+34">Espagne +34</option>
+          <option value="+91">Inde +91</option>
+          <option value="+86">Chine +86</option>
+          <option value="+55">Bresil +55</option>
+          <option value="+961">Liban +961</option>
+          </select>
+          <input id="su-phone" type="tel" placeholder="90 00 00 00" style="flex:1">
+          </div>
+        </div>
         <p class="error" id="su-error"></p>
         <button class="btn btn-primary" onclick="doSignup()">Créer mon compte</button>
       </div>
@@ -204,7 +245,48 @@
   <div class="modal-bg" id="modal-newchat">
     <div class="modal">
       <h3>Nouvelle discussion</h3>
-      <div class="field"><label>Numéro de téléphone de ton ami</label><input id="nc-phone" type="tel" placeholder="+228 ..."></div>
+      <div class="field"><label>Numéro de téléphone de ton ami</label>
+        <div style="display:flex;gap:8px">
+        <select id="nc-country" style="padding:13px 8px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:13.5px;font-family:inherit;flex-shrink:0;width:112px">
+        <option value="+228">Togo +228</option>
+          <option value="+229">Benin +229</option>
+          <option value="+225">Cote d'Ivoire +225</option>
+          <option value="+233">Ghana +233</option>
+          <option value="+234">Nigeria +234</option>
+          <option value="+226">Burkina Faso +226</option>
+          <option value="+223">Mali +223</option>
+          <option value="+221">Senegal +221</option>
+          <option value="+227">Niger +227</option>
+          <option value="+224">Guinee +224</option>
+          <option value="+237">Cameroun +237</option>
+          <option value="+241">Gabon +241</option>
+          <option value="+242">Congo-Brazzaville +242</option>
+          <option value="+243">RD Congo +243</option>
+          <option value="+235">Tchad +235</option>
+          <option value="+236">Centrafrique +236</option>
+          <option value="+250">Rwanda +250</option>
+          <option value="+254">Kenya +254</option>
+          <option value="+212">Maroc +212</option>
+          <option value="+213">Algerie +213</option>
+          <option value="+216">Tunisie +216</option>
+          <option value="+20">Egypte +20</option>
+          <option value="+27">Afrique du Sud +27</option>
+          <option value="+33">France +33</option>
+          <option value="+32">Belgique +32</option>
+          <option value="+41">Suisse +41</option>
+          <option value="+1">USA/Canada +1</option>
+          <option value="+44">Royaume-Uni +44</option>
+          <option value="+49">Allemagne +49</option>
+          <option value="+39">Italie +39</option>
+          <option value="+34">Espagne +34</option>
+          <option value="+91">Inde +91</option>
+          <option value="+86">Chine +86</option>
+          <option value="+55">Bresil +55</option>
+          <option value="+961">Liban +961</option>
+        </select>
+        <input id="nc-phone" type="tel" placeholder="90 00 00 00" style="flex:1">
+        </div>
+      </div>
       <p class="error" id="nc-error"></p>
       <button class="btn btn-primary" onclick="startNewChat()">Commencer la discussion</button>
       <button class="btn btn-ghost" onclick="closeAllModals()">Annuler</button>
@@ -224,7 +306,7 @@
     </div>
   </div>
 
-</div><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+            </div><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
 const firebaseConfig = {
@@ -256,11 +338,12 @@ function initials(name){ return (name||'?').slice(0,1).toUpperCase(); }
 async function doSignup(){
   const first = document.getElementById('su-first').value.trim();
   const last = document.getElementById('su-last').value.trim();
+  const code = document.getElementById('su-country').value;
   const phoneRaw = document.getElementById('su-phone').value.trim();
   const err = document.getElementById('su-error');
   err.textContent = '';
   if(!first || !last || !phoneRaw){ err.textContent = "Remplis tous les champs pour continuer."; return; }
-  const phone = cleanPhone(phoneRaw);
+  const phone = cleanPhone(code + phoneRaw);
   me = { first, last, phone, name: first + ' ' + last };
   localStorage.setItem('kdo-user', JSON.stringify(me));
   try{
@@ -395,10 +478,11 @@ async function saveProfile(){
 }
 
 async function startNewChat(){
+  const code = document.getElementById('nc-country').value;
   const phoneRaw = document.getElementById('nc-phone').value.trim();
   const err = document.getElementById('nc-error');
   if(!phoneRaw){ err.textContent = "Entre le numéro de ton ami."; return; }
-  const phone = cleanPhone(phoneRaw);
+  const phone = cleanPhone(code + phoneRaw);
   if(phone === me.phone){ err.textContent = "C'est ton propre numéro !"; return; }
   let name = phone;
   try{
@@ -479,7 +563,8 @@ function openChat(peerPhone, peerName, groupRoomId, isGroup){
       });
       box.innerHTML = msgs.length ? msgs.map(m=>{
         if(m.deleted) return `<div class="bubble ${m.from===me.phone?'me':'them'}" style="opacity:.55;font-style:italic">Message supprimé</div>`;
-        const tick = m.from===me.phone ? `<span class="tick">${m.read?'✓✓':'✓'}</span>` : '';
+        const timeStr = formatTime(m.ts);
+        const tick = `<span class="tick">${timeStr}${m.from===me.phone ? ' '+(m.read?'✓✓':'✓') : ''}</span>`;
         const senderLine = (currentIsGroup && m.from!==me.phone) ? `<div style="font-size:11px;color:var(--amber);margin-bottom:2px">${(roomNames&&roomNames[m.from])||m.from}</div>` : '';
         const delBtn = m.from===me.phone ? ` <span onclick="deleteMsg('${m._id}')" style="cursor:pointer;opacity:.6">🗑</span>` : '';
         const body = m.type === 'image'
@@ -510,6 +595,13 @@ function escapeHtml(s){
   const d = document.createElement('div'); d.textContent = s; return d.innerHTML;
 }
 
+function formatTime(ts){
+  if(!ts || !ts.toDate) return '';
+  try{
+    return ts.toDate().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+  }catch(e){ return ''; }
+}
+
 async function sendMsg(){
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
@@ -520,10 +612,10 @@ async function sendMsg(){
     members: [me.phone, currentPeer.phone],
     names: { [me.phone]: me.name, [currentPeer.phone]: currentPeer.name }
   };
-  await roomRef.set({ ...extra, lastMessage: text, lastTime: new Date().toISOString() }, {merge:true});
-  await roomRef.collection('messages').add({
+  roomRef.collection('messages').add({
     from: me.phone, text, read:false, ts: firebase.firestore.FieldValue.serverTimestamp()
   });
+  roomRef.set({ ...extra, lastMessage: text, lastTime: new Date().toISOString() }, {merge:true});
 }
 
 function sendPhoto(event){
