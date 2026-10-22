@@ -12,6 +12,12 @@
     --text:#F3EFE7; --muted:#8A93A6; --amber:#E8A33D; --amber-deep:#C9872A;
     --call:#E8603C; --bubble-me:#3A4A3E; --bubble-them:#232C3D;
   }
+  html[data-theme="light"]{
+    --bg:#FAF7F2; --panel:#FFFFFF; --panel-2:#F2EEE6; --line:#E3DDD0;
+    --text:#2B2416; --muted:#8A8372; --bubble-me:#DCEBDD; --bubble-them:#FFFFFF;
+  }
+  html[data-theme="light"] body{box-shadow:none}
+  html[data-theme="light"] .bubble.them{box-shadow:0 1px 3px rgba(0,0,0,.08)}
   *{box-sizing:border-box}
   html{height:100%}
   body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);
@@ -176,9 +182,7 @@
         <div class="status" id="welcome-line">Bienvenue</div>
       </div>
       <div class="spacer"></div>
-      <button class="icon-btn" onclick="shareApp()">🔗</button>
-      <button class="icon-btn" onclick="show('screen-profile')">👤</button>
-      <button class="icon-btn" onclick="show('screen-settings')">⚙️</button>
+      <button class="icon-btn" onclick="show('screen-settings')" style="font-size:24px;letter-spacing:2px">⋮</button>
     </div>
     <div class="list" id="convo-list"></div>
     <button class="fab" onclick="openActionModal()">＋</button>
@@ -209,6 +213,12 @@
     <div class="settings-list">
       <div class="settings-row" onclick="show('screen-profile')">
         <div class="ic">👤</div><div class="lbl">Profil</div>
+      </div>
+      <div class="settings-row" onclick="shareApp()">
+        <div class="ic">🔗</div><div class="lbl">Partager l'application</div>
+      </div>
+      <div class="settings-row" onclick="toggleTheme()">
+        <div class="ic">🌓</div><div class="lbl">Thème clair / sombre</div>
       </div>
       <div class="settings-row">
         <div class="ic">🔒</div><div class="lbl">Confidentialité — tes discussions ne sont visibles que par toi et ton correspondant</div>
@@ -319,7 +329,7 @@
     </div>
   </div>
 
-    </div><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  </div><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://unpkg.com/@zegocloud/zego-uikit-prebuilt/zego-uikit-prebuilt.js"></script>
 <script>
@@ -610,7 +620,16 @@ function escapeHtml(s){
 function formatTime(ts){
   if(!ts || !ts.toDate) return '';
   try{
-    return ts.toDate().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+    const d = ts.toDate();
+    const now = new Date();
+    const time = d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+    const isToday = d.toDateString() === now.toDateString();
+    if(isToday) return time;
+    const yest = new Date(now); yest.setDate(now.getDate()-1);
+    if(d.toDateString() === yest.toDateString()) return 'Hier ' + time;
+    const diffDays = Math.round((now - d) / 86400000);
+    if(diffDays < 7) return d.toLocaleDateString('fr-FR', {weekday:'short'}) + ' ' + time;
+    return d.toLocaleDateString('fr-FR', {day:'2-digit',month:'2-digit',year:'2-digit'}) + ' ' + time;
   }catch(e){ return ''; }
 }
 
@@ -668,30 +687,41 @@ function startCall(type){
     alert("Les appels ne sont disponibles que pour les discussions à deux pour l'instant.");
     return;
   }
-  const appID = 1941270213;
-  const serverSecret = "b91e1d71082c8f105a624e4ce056ea42f4c6898f";
-  const roomID = currentRoom;
-  const userID = me.phone;
-  const userName = me.name;
-  const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID, userID, userName);
-  zegoInstance = ZegoUIKitPrebuilt.create(kitToken);
+  if(typeof ZegoUIKitPrebuilt === 'undefined'){
+    alert("Le service d'appel ne s'est pas chargé (connexion internet instable). Réessaie dans quelques secondes.");
+    return;
+  }
+  const container = document.getElementById('zego-call-container');
+  container.innerHTML = '<div style="color:#fff;text-align:center;padding-top:42vh;font-family:inherit;font-size:15px">Connexion en cours…</div>';
   document.getElementById('call-overlay').classList.add('show');
-  zegoInstance.joinRoom({
-    container: document.getElementById('zego-call-container'),
-    scenario: { mode: ZegoUIKitPrebuilt.OneONoneCall },
-    turnOnMicrophoneWhenJoining: true,
-    turnOnCameraWhenJoining: type === 'video',
-    showMyCameraToggleButton: type === 'video',
-    showMyMicrophoneToggleButton: true,
-    showAudioVideoSettingsButton: false,
-    showScreenSharingButton: false,
-    showTextChat: false,
-    showUserList: false,
-    maxUsers: 2,
-    layout: "Auto",
-    showLayoutButton: false,
-    onLeaveRoom: endCall
-  });
+  try{
+    const appID = 1941270213;
+    const serverSecret = "b91e1d71082c8f105a624e4ce056ea42f4c6898f";
+    const roomID = currentRoom;
+    const userID = me.phone;
+    const userName = me.name;
+    const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID, userID, userName);
+    zegoInstance = ZegoUIKitPrebuilt.create(kitToken);
+    zegoInstance.joinRoom({
+      container: container,
+      scenario: { mode: ZegoUIKitPrebuilt.OneONoneCall },
+      turnOnMicrophoneWhenJoining: true,
+      turnOnCameraWhenJoining: type === 'video',
+      showMyCameraToggleButton: type === 'video',
+      showMyMicrophoneToggleButton: true,
+      showAudioVideoSettingsButton: false,
+      showScreenSharingButton: false,
+      showTextChat: false,
+      showUserList: false,
+      maxUsers: 2,
+      layout: "Auto",
+      showLayoutButton: false,
+      onLeaveRoom: endCall
+    });
+  }catch(e){
+    alert("Erreur lors du démarrage de l'appel : " + e.message);
+    endCall();
+  }
 }
 
 function endCall(){
@@ -700,6 +730,16 @@ function endCall(){
   if(container) container.innerHTML = '';
   zegoInstance = null;
 }
+
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('kdo-theme', t);
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  applyTheme(cur === 'dark' ? 'light' : 'dark');
+}
+applyTheme(localStorage.getItem('kdo-theme') || 'dark');
 
 if(me){ document.getElementById('welcome-line').textContent = `Connecté en tant que ${me.first}`; show('screen-list'); }
 </script>
